@@ -1,0 +1,7 @@
+mutation LoginLegacy($authtoken: String!) {
+    loginLegacy(authToken: $authtoken)
+}
+
+mutation LoginPassword($email: String!, $password: String!) {
+    loginPassword(email: $email password: $password)
+}

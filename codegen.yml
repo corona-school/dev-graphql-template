@@ -1,0 +1,10 @@
+schema: http://corona-school-backend-dev.herokuapp.com/apollo
+documents: src/queries/*.gql
+generates:
+  ./src/queries/index.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node
+    config:
+      immutableTypes: true
