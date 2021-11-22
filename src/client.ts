@@ -1,5 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache, TypedDocumentNode } from "@apollo/client";
 import { fetch } from "cross-fetch";
+import { GraphQLError } from "graphql";
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
@@ -12,8 +13,8 @@ const client = new ApolloClient({
     })
 });
 
-export class GraphQLError extends Error {
-    constructor(public errors: Readonly<object[]>) {
+export class BackendError extends Error {
+    constructor(public errors: Readonly<GraphQLError[]>) {
         super(`GraphQLError: ${errors.join(" ")}`);
     }
 }
@@ -25,7 +26,7 @@ export async function query<Result, Variables>(query: TypedDocumentNode<Result, 
     });
 
     if (result.errors) {
-        throw new GraphQLError(result.errors);
+        throw new BackendError(result.errors);
     }
 
     return result.data;
@@ -38,7 +39,7 @@ export async function mutate<Result, Variables>(mutation: TypedDocumentNode<Resu
     });
 
     if (result.errors) {
-        throw new GraphQLError(result.errors);
+        throw new BackendError(result.errors);
     }
 
     return result.data!;
